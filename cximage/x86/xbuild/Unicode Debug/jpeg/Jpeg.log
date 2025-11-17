@@ -1,0 +1,54 @@
+﻿  Jcapimin.c
+  Jcapistd.c
+  Jccoefct.c
+  Jccolor.c
+  Jcdctmgr.c
+  Jchuff.c
+  Jcinit.c
+  Jcmainct.c
+  Jcmarker.c
+  Jcmaster.c
+  Jcomapi.c
+  Jcparam.c
+  Jcphuff.c
+  Jcprepct.c
+  Jcsample.c
+  Jctrans.c
+  Jdapimin.c
+  Jdapistd.c
+  Jdatadst.c
+  Jdatasrc.c
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Jdcoefct.c
+  Jdcolor.c
+  Jddctmgr.c
+  Jdhuff.c
+  Jdinput.c
+  Jdmainct.c
+  Jdmarker.c
+  Jdmaster.c
+  Jdmerge.c
+  Jdphuff.c
+  Jdpostct.c
+  Jdsample.c
+  Jdtrans.c
+  Jerror.c
+  Jfdctflt.c
+  Jfdctfst.c
+  Jfdctint.c
+  Jidctflt.c
+  Jidctfst.c
+  Jidctint.c
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Jidctred.c
+  Jmemmgr.c
+  Jmemnobs.c
+  Jquant1.c
+  Jquant2.c
+  Jutils.c
+  코드를 생성하고 있습니다...
+C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1564,5): warning MSB8012: TargetPath(C:\Users\kimye\iCloudDrive\대학\4-2\영상처리\Team Project\Team Project 02\Template (1)\Template\Template\cximage\x86\lib\Jpeg.lib)이(가) Library의 OutputFile 속성 값(C:\Users\kimye\iCloudDrive\대학\4-2\영상처리\Team Project\Team Project 02\Template (1)\Template\Template\cximage\x86\lib\Jpeg_wd.lib)과 일치하지 않습니다. 이로 인해 프로젝트가 잘못 빌드될 수 있습니다. 이를 수정하려면 $(OutDir), $(TargetName) 및 $(TargetExt) 속성 값이 %(Lib.OutputFile)에 지정된 값과 일치해야 합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1566,5): warning MSB8012: TargetName(Jpeg)이(가) Library의 OutputFile 속성 값(Jpeg_wd)과 일치하지 않습니다. 이로 인해 프로젝트가 잘못 빌드될 수 있습니다. 이를 수정하려면 $(OutDir), $(TargetName) 및 $(TargetExt) 속성 값이 %(Lib.OutputFile)에 지정된 값과 일치해야 합니다.
+  Jpeg.vcxproj -> C:\Users\kimye\iCloudDrive\대학\4-2\영상처리\Team Project\Team Project 02\Template (1)\Template\Template\cximage\x86\lib\Jpeg.lib

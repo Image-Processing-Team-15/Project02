@@ -1,0 +1,22 @@
+# Visual Studio C++ / MFC
+Debug/
+Release/
+x64/
+Win32/
+
+*.obj
+*.pdb
+*.exe
+*.ilk
+*.suo
+*.user
+*.ncb
+*.aps
+*.opt
+*.plg
+*.idb
+
+# Modern Visual Studio
+.vs/
+ipch/
+*.vcxproj.user

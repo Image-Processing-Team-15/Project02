@@ -1,0 +1,59 @@
+﻿cl : 명령줄  warning D9035: 'Gm' 옵션은 더 이상 사용되지 않으므로 이후 릴리스에서 제거될 예정입니다.
+  ras_enc.c
+  ras_dec.c
+  ras_cod.c
+  pnm_enc.c
+  pnm_dec.c
+  pnm_cod.c
+  pgx_enc.c
+  pgx_dec.c
+  pgx_cod.c
+  mif_cod.c
+  jpg_val.c
+  jpg_dummy.c
+  jpc_util.c
+  jpc_tsfb.c
+  jpc_tagtree.c
+  jpc_t2enc.c
+  jpc_t2dec.c
+  jpc_t2cod.c
+  jpc_t1enc.c
+  jpc_t1dec.c
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  jpc_t1cod.c
+  jpc_qmfb.c
+  jpc_mqenc.c
+  jpc_mqdec.c
+  jpc_mqcod.c
+  jpc_mct.c
+  jpc_math.c
+  jpc_enc.c
+  jpc_dec.c
+  jpc_cs.c
+  jpc_bs.c
+  jp2_enc.c
+  jp2_dec.c
+  jp2_cod.c
+  jas_version.c
+  jas_tvp.c
+  jas_string.c
+  jas_stream.c
+  jas_seq.c
+  jas_malloc.c
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  jas_init.c
+  jas_image.c
+  jas_iccdata.c
+  jas_icc.c
+  jas_getopt.c
+  jas_debug.c
+  jas_cm.c
+  bmp_enc.c
+  bmp_dec.c
+  bmp_cod.c
+  코드를 생성하고 있습니다...
+C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1564,5): warning MSB8012: TargetPath(C:\Users\kimye\iCloudDrive\대학\4-2\영상처리\Team Project\Team Project 02\Template (1)\Template\Template\cximage\x86\lib\jasper.lib)이(가) Library의 OutputFile 속성 값(C:\Users\kimye\iCloudDrive\대학\4-2\영상처리\Team Project\Team Project 02\Template (1)\Template\Template\cximage\x86\lib\jasper_wd.lib)과 일치하지 않습니다. 이로 인해 프로젝트가 잘못 빌드될 수 있습니다. 이를 수정하려면 $(OutDir), $(TargetName) 및 $(TargetExt) 속성 값이 %(Lib.OutputFile)에 지정된 값과 일치해야 합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1566,5): warning MSB8012: TargetName(jasper)이(가) Library의 OutputFile 속성 값(jasper_wd)과 일치하지 않습니다. 이로 인해 프로젝트가 잘못 빌드될 수 있습니다. 이를 수정하려면 $(OutDir), $(TargetName) 및 $(TargetExt) 속성 값이 %(Lib.OutputFile)에 지정된 값과 일치해야 합니다.
+  jasper.vcxproj -> C:\Users\kimye\iCloudDrive\대학\4-2\영상처리\Team Project\Team Project 02\Template (1)\Template\Template\cximage\x86\lib\jasper.lib

@@ -1,0 +1,40 @@
+﻿cl : 명령줄  warning D9035: 'Gm' 옵션은 더 이상 사용되지 않으므로 이후 릴리스에서 제거될 예정입니다.
+  tif_zip.c
+  tif_write.c
+  tif_warning.c
+  tif_version.c
+  tif_tile.c
+  tif_thunder.c
+  tif_swab.c
+  tif_strip.c
+  tif_read.c
+  tif_print.c
+  tif_predict.c
+  tif_pixarlog.c
+  tif_packbits.c
+  tif_open.c
+  tif_ojpeg.c
+  tif_next.c
+  tif_lzw.c
+  tif_luv.c
+  tif_jpeg.c
+  tif_getimage.c
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  tif_flush.c
+  tif_fax3.c
+  tif_error.c
+  tif_dumpmode.c
+  tif_dirwrite.c
+  tif_dirread.c
+  tif_dirinfo.c
+  tif_dir.c
+  tif_compress.c
+  tif_codec.c
+  tif_close.c
+  tif_aux.c
+  fax3sm_winnt.c
+  코드를 생성하고 있습니다...
+C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1564,5): warning MSB8012: TargetPath(C:\Users\kimye\iCloudDrive\대학\4-2\영상처리\Team Project\Team Project 02\Template (1)\Template\Template\cximage\x86\lib\Tiff.lib)이(가) Library의 OutputFile 속성 값(C:\Users\kimye\iCloudDrive\대학\4-2\영상처리\Team Project\Team Project 02\Template (1)\Template\Template\cximage\x86\lib\Tiff_wd.lib)과 일치하지 않습니다. 이로 인해 프로젝트가 잘못 빌드될 수 있습니다. 이를 수정하려면 $(OutDir), $(TargetName) 및 $(TargetExt) 속성 값이 %(Lib.OutputFile)에 지정된 값과 일치해야 합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1566,5): warning MSB8012: TargetName(Tiff)이(가) Library의 OutputFile 속성 값(Tiff_wd)과 일치하지 않습니다. 이로 인해 프로젝트가 잘못 빌드될 수 있습니다. 이를 수정하려면 $(OutDir), $(TargetName) 및 $(TargetExt) 속성 값이 %(Lib.OutputFile)에 지정된 값과 일치해야 합니다.
+  Tiff.vcxproj -> C:\Users\kimye\iCloudDrive\대학\4-2\영상처리\Team Project\Team Project 02\Template (1)\Template\Template\cximage\x86\lib\Tiff.lib
