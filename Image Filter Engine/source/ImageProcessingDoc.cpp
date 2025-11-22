@@ -1,8 +1,4 @@
-
-// ImageProcessingDoc.cpp : Implement a CImageProcessingDoc Class
-//
-
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 
 #undef min
 #undef max
@@ -15,37 +11,28 @@
 #define new DEBUG_NEW
 #endif
 
-
-// CImageProcessingDoc
-
 IMPLEMENT_DYNCREATE(CImageProcessingDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
 
-	// File Menu
 	ON_COMMAND(ID_FILE_REVERT, &CImageProcessingDoc::OnFileRevert)
 
-	// Stylization Filters
 	ON_COMMAND(ID_STYLIZE_CARTOON, &CImageProcessingDoc::OnStylizeCartoon)
 	ON_COMMAND(ID_STYLIZE_OILPAINTING, &CImageProcessingDoc::OnStylizeOilPainting)
 	ON_COMMAND(ID_STYLIZE_POPART, &CImageProcessingDoc::OnStylizePopArt)
 	ON_COMMAND(ID_STYLIZE_EMBOSS, &CImageProcessingDoc::OnStylizeEmboss)
 
-	// Color & Mood Filters
 	ON_COMMAND(ID_COLORMOOD_RETRO, &CImageProcessingDoc::OnColorMoodRetro)
-	ON_COMMAND(ID_COLORMOOD_WARM, &CImageProcessingDoc::OnColorMoodWarm) 
-	ON_COMMAND(ID_COLORMOOD_COOL, &CImageProcessingDoc::OnColorMoodCool) 
+	ON_COMMAND(ID_COLORMOOD_WARM, &CImageProcessingDoc::OnColorMoodWarm)
+	ON_COMMAND(ID_COLORMOOD_COOL, &CImageProcessingDoc::OnColorMoodCool)
 	ON_COMMAND(ID_COLORMOOD_BLOOM, &CImageProcessingDoc::OnColorMoodBloom)
 	ON_COMMAND(ID_COLORMOOD_VIGNETTE, &CImageProcessingDoc::OnColorMoodVignette)
 
 END_MESSAGE_MAP()
 
 
-// CImageProcessingDoc Contruction/Destuction
-
 CImageProcessingDoc::CImageProcessingDoc()
 {
-	//// TODO: Add an one-time generating code here
 	m_pImage = NULL;
 }
 
@@ -55,12 +42,11 @@ CImageProcessingDoc::~CImageProcessingDoc()
 		delete m_pImage;
 }
 
-BOOL CImageProcessingDoc::OnOpenDocument(LPCTSTR lpszPathName) 
+BOOL CImageProcessingDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
-	// TODO: load imagefile // DONE
 	m_pImage = new CxImage;
 	m_pImage->Load(lpszPathName, FindType(lpszPathName));
 
@@ -72,31 +58,20 @@ BOOL CImageProcessingDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	//// TODO: Add a re-initialization code here
-	//// SDI documents will reuse this article
-
 	return TRUE;
 }
 
-
-
-
-// CImageProcessingDoc serialization
 
 void CImageProcessingDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
-		//// TODO: Add a saving code here
 	}
 	else
 	{
-		//// TODO: Add a loading code here
 	}
 }
 
-
-// CImageProcessingDoc diagnosis
 
 #ifdef _DEBUG
 void CImageProcessingDoc::AssertValid() const
@@ -108,18 +83,16 @@ void CImageProcessingDoc::Dump(CDumpContext& dc) const
 {
 	CDocument::Dump(dc);
 }
-#endif //_DEBUG
+#endif 
 
-
-// CImageProcessingDoc command
 
 CString CImageProcessingDoc::FindExtension(const CString& name)
 {
 	int len = name.GetLength();
 	int i;
-	for (i = len-1; i >= 0; i--){
-		if (name[i] == '.'){
-			return name.Mid(i+1);
+	for (i = len - 1; i >= 0; i--) {
+		if (name[i] == '.') {
+			return name.Mid(i + 1);
 		}
 	}
 	return CString(_T(""));
@@ -129,9 +102,9 @@ CString CImageProcessingDoc::RemoveExtension(const CString& name)
 {
 	int len = name.GetLength();
 	int i;
-	for (i = len-1; i >= 0; i--){
-		if (name[i] == '.'){
-			return name.Mid(0,i);
+	for (i = len - 1; i >= 0; i--) {
+		if (name[i] == '.') {
+			return name.Mid(0, i);
 		}
 	}
 	return name;
@@ -142,71 +115,52 @@ int CImageProcessingDoc::FindType(const CString& ext)
 	return CxImage::GetTypeIdFromName(ext);
 }
 
-// ÆÄÀÏ ´Ù½Ã ºÒ·¯¿À±â
 void CImageProcessingDoc::OnFileRevert()
 {
-	// 1. ÀÌ¹ÌÁö°¡ ¿­·ÁÀÖ´ÂÁö, ÆÄÀÏ °æ·Î°¡ ÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
 	if (!m_pImage || GetPathName().IsEmpty())
 	{
 		AfxMessageBox(_T("Cannot revert. File path is unknown or no image is loaded."));
 		return;
 	}
 
-	// 2. ÇöÀç ¹®¼­¿¡ ÀúÀåµÈ ÆÄÀÏ °æ·Î¸¦ °¡Á®¿É´Ï´Ù.
 	CString strPath = GetPathName();
 
-	// 3. ±âÁ¸¿¡ ¼öÁ¤µÇ¾ú´ø m_pImage °´Ã¼¸¦ ¸Þ¸ð¸®¿¡¼­ »èÁ¦ÇÕ´Ï´Ù.
 	delete m_pImage;
 	m_pImage = NULL;
 
-	// 4. »õ CxImage °´Ã¼¸¦ ¸¸µé°í, ÀúÀåµÈ °æ·Î(strPath)¸¦ ÀÌ¿ëÇØ
-	//    µð½ºÅ©¿¡¼­ ¿øº» ÆÄÀÏÀ» ´Ù½Ã ·ÎµåÇÕ´Ï´Ù.
 	m_pImage = new CxImage;
 	if (!m_pImage->Load(strPath, FindType(strPath)))
 	{
-		// ¸¸¾à ¿øº» ÆÄÀÏÀÌ »èÁ¦µÇ¾ú°Å³ª ÇÏ¸é ·Îµå¿¡ ½ÇÆÐÇÒ ¼ö ÀÖ½À´Ï´Ù.
 		AfxMessageBox(_T("Error: Failed to reload the original image from disk."));
 		delete m_pImage;
 		m_pImage = NULL;
 		return;
 	}
 
-	// 5. ¸ðµç ºä(View)¿¡ È­¸éÀ» »õ·Î °íÄ§ÇÏ¶ó°í ¾Ë¸³´Ï´Ù.
 	UpdateAllViews(NULL);
 }
 
-// ==========================================================
-//  2D Convolution Engine (3x3)
-//  3x3 Ä¿³Î ¹è¿­À» ÀÔ·Â¹Þ¾Æ ÀÌ¹ÌÁö ÀüÃ¼¿¡ ÇÕ¼º°ö ¼öÇà
-// ==========================================================
 void CImageProcessingDoc::ApplyConvolution3x3(double kernel[3][3])
 {
 	if (!m_pImage) return;
 
-	// 1. ¿øº» ÀÌ¹ÌÁö¸¦ º¹»çÇÕ´Ï´Ù. (°è»ê Áß¿¡´Â ¿øº» °ªÀÌ ÇÊ¿äÇÏ¹Ç·Î)
 	CxImage tempImage(*m_pImage);
 
 	int width = m_pImage->GetWidth();
 	int height = m_pImage->GetHeight();
 
-	// 2. ÀÌ¹ÌÁö ¼øÈ¸ (°¡ÀåÀÚ¸® 1ÇÈ¼¿Àº °è»ê¿¡¼­ Á¦¿Ü: 1 ~ size-1)
-	//    (°¡ÀåÀÚ¸®´Â ÀÌ¿ô ÇÈ¼¿ÀÌ ¾ø¾î¼­ °è»êÀÌ º¹ÀâÇØÁö¹Ç·Î º¸Åë °Ç³Ê¶Ý´Ï´Ù)
 	for (int y = 1; y < height - 1; y++)
 	{
 		for (int x = 1; x < width - 1; x++)
 		{
 			double sumR = 0.0, sumG = 0.0, sumB = 0.0;
 
-			// 3. 3x3 Ä¿³Î Àû¿ë (Convolution ÇÙ½É ·ÎÁ÷)
 			for (int ky = 0; ky < 3; ky++)
 			{
 				for (int kx = 0; kx < 3; kx++)
 				{
-					// ÁÖº¯ ÇÈ¼¿(neighbor) °¡Á®¿À±â
-					// (x-1, y-1) ºÎÅÍ (x+1, y+1) ±îÁö
 					RGBQUAD pixel = tempImage.GetPixelColor(x + kx - 1, y + ky - 1);
 
-					// Ä¿³Î °ª°ú °öÇØ¼­ ´©Àû
 					double k = kernel[ky][kx];
 					sumR += pixel.rgbRed * k;
 					sumG += pixel.rgbGreen * k;
@@ -214,7 +168,6 @@ void CImageProcessingDoc::ApplyConvolution3x3(double kernel[3][3])
 				}
 			}
 
-			// 4. °á°ú°ª Å¬·¥ÇÎ ¹× ÀúÀå
 			RGBQUAD newPixel;
 			newPixel.rgbRed = Clamp(sumR);
 			newPixel.rgbGreen = Clamp(sumG);
@@ -226,339 +179,343 @@ void CImageProcessingDoc::ApplyConvolution3x3(double kernel[3][3])
 	}
 }
 
-// [µµ¿ì¹Ì ÇÔ¼ö] °ªÀÇ ¹üÀ§¸¦ 0~255·Î Á¦ÇÑ
 BYTE CImageProcessingDoc::Clamp(double value)
 {
 	if (value > 255.0) return 255;
-	if (value < 0.0)   return 0;
+	if (value < 0.0) return 0;
 	return (BYTE)value;
 }
 
-// ----------------------
-// Stylization Filters
-// ----------------------
 void CImageProcessingDoc::OnStylizeCartoon()
 {
-	// TODO: Ä«Å÷ ÇÊÅÍ ±¸Çö ÄÚµå Ãß°¡
 	if (!m_pImage) return;
-	AfxMessageBox(_T("Cartoon Filter ½ÇÇà"));
+	AfxMessageBox(_T("Cartoon Filter ì‹¤í–‰"));
 	UpdateAllViews(NULL);
 }
 
 void CImageProcessingDoc::OnStylizeOilPainting()
 {
-	// TODO: À¯È­ ÇÊÅÍ ±¸Çö ÄÚµå Ãß°¡
 	if (!m_pImage) return;
-	AfxMessageBox(_T("Oil Painting Filter ½ÇÇà"));
+	AfxMessageBox(_T("Oil Painting Filter ì‹¤í–‰"));
 	UpdateAllViews(NULL);
 }
 
 void CImageProcessingDoc::OnStylizePopArt()
 {
-	// --- ÇÊÅÍ Æ©´× °ª (»ó¼ö) ---
-	// "Posterization" ·¹º§ÀÔ´Ï´Ù.
-	// 0~255ÀÇ »ö»ó ¹üÀ§¸¦ ¸î °³ÀÇ "°è´Ü"À¸·Î ´Ü¼øÈ­ÇÒÁö °áÁ¤ÇÕ´Ï´Ù.
-	// °ªÀÌ ³·À»¼ö·Ï(¿¹: 3 ¶Ç´Â 4) »ö»óÀÌ ´õ ´Ü¼øÇØÁö°í "Pop Art" ´À³¦ÀÌ °­ÇØÁý´Ï´Ù.
 	const int nLevels = 4;
-	// --------------------------
 
-	// 1. ÀÌ¹ÌÁö°¡ ¿­·ÁÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
 	if (!m_pImage) return;
 
-	// 2. ÄÃ·¯ ÀÌ¹ÌÁö°¡ ¾Æ´Ï¸é(±×·¹ÀÌ½ºÄÉÀÏÀÌ¸é) ÇÊÅÍ¸¦ Àû¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.
 	if (m_pImage->GetBpp() < 24)
 	{
 		AfxMessageBox(_T("Pop Art filter can only be applied to color images."));
 		return;
 	}
 
-	// 3. ÀÌ¹ÌÁöÀÇ °¡·Î, ¼¼·Î Å©±â¸¦ °¡Á®¿É´Ï´Ù.
 	int width = m_pImage->GetWidth();
 	int height = m_pImage->GetHeight();
 
-	// 4. Posterization ·ÎÁ÷¿¡ ÇÊ¿äÇÑ "°è´Ü(bin)ÀÇ Å©±â"¸¦ °è»êÇÕ´Ï´Ù.
-	// 256°³ÀÇ °ªÀ» nLevels ´Ü°è·Î ³ª´¯´Ï´Ù. (¿¹: 256 / 5 = 51.2)
 	const double stepSize = 256.0 / nLevels;
 
-	// 5. ¸ðµç ÇÈ¼¿À» ¼øÈ¸ÇÏ±â À§ÇÑ 2Áß ¹Ýº¹¹®
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
-			// 6. (x, y) À§Ä¡ÀÇ ÇÈ¼¿ »ö»ó °ª(RGB)À» ÀÐ¾î¿É´Ï´Ù.
 			RGBQUAD color = m_pImage->GetPixelColor(x, y);
 
-			// 7. Pop Art (Posterization) ·ÎÁ÷ Àû¿ë
-			// R, G, B °¢ Ã¤³Î¿¡ ´ëÇØ µ¶¸³ÀûÀ¸·Î ¼öÇàÇÕ´Ï´Ù.
-
-			// --- Red Ã¤³Î ---
-			// 7a. ÇöÀç R°ªÀÌ ¸î ¹øÂ° "°è´Ü"¿¡ ¼ÓÇÏ´ÂÁö °è»êÇÕ´Ï´Ù.
-			// (¿¹: R=70, stepSize=51.2 -> 70 / 51.2 = 1.36... -> (int)1 -> 1¹øÂ° °è´Ü)
 			int binIndex_R = (int)(color.rgbRed / stepSize);
-			// 7b. ±× °è´ÜÀÇ "´ëÇ¥°ª"(Áß°£°ª)À¸·Î »ö»óÀ» º¯°æÇÕ´Ï´Ù.
-			// (¿¹: 1 * 51.2 + (51.2 / 2) = 76.8)
 			double newRed = (binIndex_R * stepSize) + (stepSize / 2.0);
 
-			// --- Green Ã¤³Î ---
 			int binIndex_G = (int)(color.rgbGreen / stepSize);
 			double newGreen = (binIndex_G * stepSize) + (stepSize / 2.0);
 
-			// --- Blue Ã¤³Î ---
 			int binIndex_B = (int)(color.rgbBlue / stepSize);
 			double newBlue = (binIndex_B * stepSize) + (stepSize / 2.0);
 
 
-			// 8. Å¬·¥ÇÎ(Clamping)
-			// (ÀÌ ·ÎÁ÷Àº 0~255 ¹üÀ§¸¦ ¹þ¾î³ªÁö ¾ÊÁö¸¸, BYTE º¯È¯À» À§ÇØ ¸í½ÃÀûÀ¸·Î µÓ´Ï´Ù.)
 			color.rgbRed = (BYTE)std::min(255.0, std::max(0.0, newRed));
 			color.rgbGreen = (BYTE)std::min(255.0, std::max(0.0, newGreen));
 			color.rgbBlue = (BYTE)std::min(255.0, std::max(0.0, newBlue));
 
-			// 9. °è»êµÈ »õ »ö»ó °ªÀ¸·Î (x, y) À§Ä¡ÀÇ ÇÈ¼¿À» µ¤¾î¾¹´Ï´Ù.
 			m_pImage->SetPixelColor(x, y, color);
 		}
 	}
 
-	// 10. ¸ðµç ºä(View)¿¡ È­¸éÀ» »õ·Î °íÄ§ÇÏ¶ó°í ¾Ë¸³´Ï´Ù.
 	UpdateAllViews(NULL);
 }
 
 void CImageProcessingDoc::OnStylizeEmboss()
 {
-	// TODO: ¿¥º¸½º ÇÊÅÍ ±¸Çö ÄÚµå Ãß°¡
 	if (!m_pImage) return;
-	AfxMessageBox(_T("Emboss Filter ½ÇÇà"));
+
+	int width = m_pImage->GetWidth();
+	int height = m_pImage->GetHeight();
+
+	CxImage I_Gray(*m_pImage);
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			RGBQUAD color = I_Gray.GetPixelColor(x, y);
+
+			int grayValue = static_cast<int>(0.299 * color.rgbRed + 0.587 * color.rgbGreen + 0.114 * color.rgbBlue);
+
+			color.rgbRed = color.rgbGreen = color.rgbBlue = Clamp(grayValue);
+
+			I_Gray.SetPixelColor(x, y, color);
+		}
+	}
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			RGBQUAD gray_pixel = I_Gray.GetPixelColor(x, y);
+			m_pImage->SetPixelColor(x, y, gray_pixel);
+		}
+	}
+
+	double kernel_emboss[3][3] = {
+		{-2.0, -1.0, 0.0},
+		{-1.0, 1.0, 1.0},
+		{ 0.0, 1.0, 2.0}
+	};
+
+	ApplyConvolution3x3(kernel_emboss);
+
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			RGBQUAD color = m_pImage->GetPixelColor(x, y);
+
+			double embossed_value = color.rgbRed;
+
+			int final_gray_value = Clamp(embossed_value);
+
+			RGBQUAD final_pixel;
+			final_pixel.rgbRed = final_gray_value;
+			final_pixel.rgbGreen = final_gray_value;
+			final_pixel.rgbBlue = final_gray_value;
+			final_pixel.rgbReserved = 0;
+
+			m_pImage->SetPixelColor(x, y, final_pixel);
+		}
+	}
+
 	UpdateAllViews(NULL);
 }
 
 
-// ----------------------
-// Color & Mood Filters
-// ----------------------
+void CImageProcessingDoc::OnColorMoodBloom()
+{
+	if (!m_pImage) return;
+
+	const float strength = 0.7f;
+	const int threshold = 0;
+
+	int width = m_pImage->GetWidth();
+	int height = m_pImage->GetHeight();
+
+	CxImage original_copy(*m_pImage);
+
+	CxImage I_Bright(*m_pImage);
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			RGBQUAD color = I_Bright.GetPixelColor(x, y);
+			int L = (color.rgbRed + color.rgbGreen + color.rgbBlue) / 3;
+
+			if (L < threshold) {
+				color.rgbRed = color.rgbGreen = color.rgbBlue = 0;
+				I_Bright.SetPixelColor(x, y, color);
+			}
+		}
+	}
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			RGBQUAD bright_pixel = I_Bright.GetPixelColor(x, y);
+			m_pImage->SetPixelColor(x, y, bright_pixel);
+		}
+	}
+
+	double kernel_gaussian[3][3] = {
+		{1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0},
+		{2.0 / 16.0, 4.0 / 16.0, 2.0 / 16.0},
+		{1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0}
+	};
+
+	ApplyConvolution3x3(kernel_gaussian);
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			RGBQUAD blur_color = m_pImage->GetPixelColor(x, y);
+			RGBQUAD original_color = original_copy.GetPixelColor(x, y);
+
+			RGBQUAD final_color;
+			final_color.rgbRed = Clamp(original_color.rgbRed + (int)(blur_color.rgbRed * strength));
+			final_color.rgbGreen = Clamp(original_color.rgbGreen + (int)(blur_color.rgbGreen * strength));
+			final_color.rgbBlue = Clamp(original_color.rgbBlue + (int)(blur_color.rgbBlue * strength));
+			final_color.rgbReserved = 0;
+
+			m_pImage->SetPixelColor(x, y, final_color);
+		}
+	}
+
+	UpdateAllViews(NULL);
+}
+
 void CImageProcessingDoc::OnColorMoodRetro()
 {
-	// --- ÇÊÅÍ Æ©´× °ª (»ó¼ö) ---
-	// "¼¼ÇÇ¾Æ(Sepia)" Åæ º¯È¯¿¡´Â Ç¥ÁØÀûÀ¸·Î »ç¿ëµÇ´Â 3x3 Çà·Ä(Matrix) °ªÀÌ ÀÖ½À´Ï´Ù.
-	// ÀÌ °ªµéÀº °¢ ÇÈ¼¿ÀÇ (R, G, B) °ªÀ» Á¶ÇÕÇÏ¿© »õ·Î¿î (R, G, B) °ªÀ» ¸¸µì´Ï´Ù.
-	// (¿¹: newRed = R*0.393 + G*0.769 + B*0.189)
 	const double SEP_R_R = 0.393; const double SEP_R_G = 0.769; const double SEP_R_B = 0.189;
 	const double SEP_G_R = 0.349; const double SEP_G_G = 0.686; const double SEP_G_B = 0.168;
 	const double SEP_B_R = 0.272; const double SEP_B_G = 0.534; const double SEP_B_B = 0.131;
-	// --------------------------
 
-	// 1. ÀÌ¹ÌÁö°¡ ¿­·ÁÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
 	if (!m_pImage) return;
 
-	// 2. ÄÃ·¯ ÀÌ¹ÌÁö°¡ ¾Æ´Ï¸é(±×·¹ÀÌ½ºÄÉÀÏÀÌ¸é) ÇÊÅÍ¸¦ Àû¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.
 	if (m_pImage->GetBpp() < 24)
 	{
 		AfxMessageBox(_T("Retro filter can only be applied to color images."));
 		return;
 	}
 
-	// 3. ÀÌ¹ÌÁöÀÇ °¡·Î, ¼¼·Î Å©±â¸¦ °¡Á®¿É´Ï´Ù.
 	int width = m_pImage->GetWidth();
 	int height = m_pImage->GetHeight();
 
-	// 4. ¸ðµç ÇÈ¼¿À» ¼øÈ¸ÇÏ±â À§ÇÑ 2Áß ¹Ýº¹¹®
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
-			// 5. (x, y) À§Ä¡ÀÇ ÇÈ¼¿ »ö»ó °ª(RGB)À» ÀÐ¾î¿É´Ï´Ù.
 			RGBQUAD color = m_pImage->GetPixelColor(x, y);
 
-			// ¿øº» R, G, B °ªÀ» ÀÓ½Ã º¯¼ö¿¡ ÀúÀå (°è»ê¿¡ ÇÊ¿ä)
 			double originalRed = color.rgbRed;
 			double originalGreen = color.rgbGreen;
 			double originalBlue = color.rgbBlue;
 
-			// 6. Retro (Sepia) ·ÎÁ÷ Àû¿ë (À§ÀÇ Çà·Ä »ó¼ö¸¦ »ç¿ë)
 			double newRed = (originalRed * SEP_R_R) + (originalGreen * SEP_R_G) + (originalBlue * SEP_R_B);
 			double newGreen = (originalRed * SEP_G_R) + (originalGreen * SEP_G_G) + (originalBlue * SEP_B_B);
 			double newBlue = (originalRed * SEP_B_R) + (originalGreen * SEP_B_G) + (originalBlue * SEP_B_B);
 
-			// 7. Å¬·¥ÇÎ(Clamping): ¼¼ÇÇ¾Æ °ø½ÄÀº 255¸¦ ÃÊ°úÇÏ´Â °æ¿ì°¡ ¸¹½À´Ï´Ù.
 			color.rgbRed = (BYTE)std::min(255.0, std::max(0.0, newRed));
 			color.rgbGreen = (BYTE)std::min(255.0, std::max(0.0, newGreen));
 			color.rgbBlue = (BYTE)std::min(255.0, std::max(0.0, newBlue));
 
-			// 8. °è»êµÈ »õ »ö»ó °ªÀ¸·Î (x, y) À§Ä¡ÀÇ ÇÈ¼¿À» µ¤¾î¾¹´Ï´Ù.
 			m_pImage->SetPixelColor(x, y, color);
 		}
 	}
 
-	// 9. ¸ðµç ºä(View)¿¡ È­¸éÀ» »õ·Î °íÄ§ÇÏ¶ó°í ¾Ë¸³´Ï´Ù.
 	UpdateAllViews(NULL);
 }
 
 void CImageProcessingDoc::OnColorMoodWarm()
 {
-	// --- ÇÊÅÍ Æ©´× °ª (»ó¼ö) ---
 	const int nRedAdjust = 25;
 	const int nGreenAdjust = 10;
 	const int nBlueAdjust = -15;
 
-	// 1. ÀÌ¹ÌÁö°¡ ¿­·ÁÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
 	if (!m_pImage) return;
 
-	// 2. ÄÃ·¯ ÀÌ¹ÌÁö°¡ ¾Æ´Ï¸é(±×·¹ÀÌ½ºÄÉÀÏÀÌ¸é) ÇÊÅÍ¸¦ Àû¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.
 	if (m_pImage->GetBpp() < 24)
 	{
 		AfxMessageBox(_T("Warm filter can only be applied to color images."));
 		return;
 	}
 
-	// 3. ÀÌ¹ÌÁöÀÇ °¡·Î, ¼¼·Î Å©±â¸¦ °¡Á®¿É´Ï´Ù.
 	int width = m_pImage->GetWidth();
 	int height = m_pImage->GetHeight();
 
-	// 4. ¸ðµç ÇÈ¼¿À» ¼øÈ¸ÇÏ±â À§ÇÑ 2Áß ¹Ýº¹¹®
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
-			// 5. (x, y) À§Ä¡ÀÇ ÇÈ¼¿ »ö»ó °ª(RGB)À» ÀÐ¾î¿É´Ï´Ù.
 			RGBQUAD color = m_pImage->GetPixelColor(x, y);
 
-			// 6. Warm Tone ·ÎÁ÷ Àû¿ë (R, G´Â ³ôÀÌ°í, B´Â ³·Ãä´Ï´Ù)
-			//    (°ªÀº ¿øÇÏ´Â ´À³¦¿¡ µû¶ó Á¶Àý(tune)ÇÒ ¼ö ÀÖ½À´Ï´Ù.)
 			int newRed = color.rgbRed + nRedAdjust;
 			int newGreen = color.rgbGreen + nGreenAdjust;
 			int newBlue = color.rgbBlue + nBlueAdjust;
 
-			// 7. Å¬·¥ÇÎ(Clamping): »ö»ó °ªÀº 0~255 ¹üÀ§¸¦ ¹þ¾î³¯ ¼ö ¾ø½À´Ï´Ù.
 			color.rgbRed = (BYTE)std::min(255, std::max(0, newRed));
 			color.rgbGreen = (BYTE)std::min(255, std::max(0, newGreen));
 			color.rgbBlue = (BYTE)std::min(255, std::max(0, newBlue));
 
-			// 8. °è»êµÈ »õ »ö»ó °ªÀ¸·Î (x, y) À§Ä¡ÀÇ ÇÈ¼¿À» µ¤¾î¾¹´Ï´Ù.
 			m_pImage->SetPixelColor(x, y, color);
 		}
 	}
 
-	// 9. ¸ðµç ºä(View)¿¡ È­¸éÀ» »õ·Î °íÄ§ÇÏ¶ó°í ¾Ë¸³´Ï´Ù.
 	UpdateAllViews(NULL);
 }
 
 void CImageProcessingDoc::OnColorMoodCool()
 {
-	// --- ÇÊÅÍ Æ©´× °ª (»ó¼ö) ---
 	const int nRedAdjust = -15;
 	const int nGreenAdjust = -10;
 	const int nBlueAdjust = 25;
 
-	// 1. ÀÌ¹ÌÁö°¡ ¿­·ÁÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
 	if (!m_pImage) return;
 
-	// 2. ÄÃ·¯ ÀÌ¹ÌÁö°¡ ¾Æ´Ï¸é(±×·¹ÀÌ½ºÄÉÀÏÀÌ¸é) ÇÊÅÍ¸¦ Àû¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.
 	if (m_pImage->GetBpp() < 24)
 	{
 		AfxMessageBox(_T("Cool filter can only be applied to color images."));
 		return;
 	}
 
-	// 3. ÀÌ¹ÌÁöÀÇ °¡·Î, ¼¼·Î Å©±â¸¦ °¡Á®¿É´Ï´Ù.
 	int width = m_pImage->GetWidth();
 	int height = m_pImage->GetHeight();
 
-	// 4. ¸ðµç ÇÈ¼¿À» ¼øÈ¸ÇÏ±â À§ÇÑ 2Áß ¹Ýº¹¹®
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
-			// 5. (x, y) À§Ä¡ÀÇ ÇÈ¼¿ »ö»ó °ª(RGB)À» ÀÐ¾î¿É´Ï´Ù.
 			RGBQUAD color = m_pImage->GetPixelColor(x, y);
 
-			// 6. Cool Tone ·ÎÁ÷ Àû¿ë (B´Â ³ôÀÌ°í, R, G´Â ³·Ãä´Ï´Ù)
 			int newRed = color.rgbRed + nRedAdjust;
 			int newGreen = color.rgbGreen + nGreenAdjust;
 			int newBlue = color.rgbBlue + nBlueAdjust;
 
-			// 7. Å¬·¥ÇÎ(Clamping): »ö»ó °ªÀº 0~255 ¹üÀ§¸¦ ¹þ¾î³¯ ¼ö ¾ø½À´Ï´Ù.
 			color.rgbRed = (BYTE)std::min(255, std::max(0, newRed));
 			color.rgbGreen = (BYTE)std::min(255, std::max(0, newGreen));
 			color.rgbBlue = (BYTE)std::min(255, std::max(0, newBlue));
 
-			// 8. °è»êµÈ »õ »ö»ó °ªÀ¸·Î (x, y) À§Ä¡ÀÇ ÇÈ¼¿À» µ¤¾î¾¹´Ï´Ù.
 			m_pImage->SetPixelColor(x, y, color);
 		}
 	}
 
-	// 9. ¸ðµç ºä(View)¿¡ È­¸éÀ» »õ·Î °íÄ§ÇÏ¶ó°í ¾Ë¸³´Ï´Ù.
-	UpdateAllViews(NULL);
-}
-
-void CImageProcessingDoc::OnColorMoodBloom()
-{
-	// TODO: ºí·ë ÇÊÅÍ ±¸Çö ÄÚµå Ãß°¡
-	if (!m_pImage) return;
-	AfxMessageBox(_T("Bloom Filter ½ÇÇà"));
 	UpdateAllViews(NULL);
 }
 
 void CImageProcessingDoc::OnColorMoodVignette()
 {
-	// --- ÇÊÅÍ Æ©´× °ª (»ó¼ö) ---
-	// ºñ³×Æ®ÀÇ "°­µµ"ÀÔ´Ï´Ù.
-	// 1.0 : ÀÌ¹ÌÁö ¸ð¼­¸®(°¡ÀåÀÚ¸®)¿¡¼­ Á¤È®È÷ ¾îµÎ¿öÁö±â ½ÃÀÛÇÕ´Ï´Ù.
-	// 1.5 : ¸ð¼­¸®º¸´Ù ´õ ¾ÈÂÊ(Áß½É ÂÊ)¿¡¼­ºÎÅÍ ¾îµÎ¿öÁý´Ï´Ù. (È¿°ú°¡ °­ÇØÁü)
-	// 0.7 : ¸ð¼­¸® ¹Ù±ùÂÊºÎÅÍ ¾îµÎ¿öÁ®¼­, ½ÇÁ¦ ÀÌ¹ÌÁö¿£ È¿°ú°¡ ¾àÇÏ°Ô µé¾î°©´Ï´Ù.
 	const double VIGNETTE_STRENGTH = 1.3;
-	// --------------------------
 
-	// 1. ÀÌ¹ÌÁö°¡ ¿­·ÁÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
 	if (!m_pImage) return;
 
-	// 2. ÄÃ·¯/±×·¹ÀÌ½ºÄÉÀÏ ¸ðµÎ Àû¿ë °¡´ÉÇÏ¹Ç·Î Bpp Ã¼Å©´Â »ý·«ÇÕ´Ï´Ù.
-
-	// 3. ÀÌ¹ÌÁö Å©±â ¹× Áß½ÉÁ¡ °è»ê
 	int width = m_pImage->GetWidth();
 	int height = m_pImage->GetHeight();
 
-	// Áß½ÉÁ¡ (¼Ò¼öÁ¡ °è»êÀ» À§ÇØ double »ç¿ë)
 	double centerX = width / 2.0;
 	double centerY = height / 2.0;
 
-	// 4. Áß½É(center)¿¡¼­ °¡Àå ¸Õ ÁöÁ¡(¸ð¼­¸®)±îÁöÀÇ ÃÖ´ë °Å¸® °è»ê
-	// (ÇÇÅ¸°í¶ó½º Á¤¸®: (0,0) ~ (centerX, centerY) °Å¸®)
 	double maxDistance = sqrt((centerX * centerX) + (centerY * centerY));
 
-	// 5. ¸ðµç ÇÈ¼¿À» ¼øÈ¸ÇÏ±â À§ÇÑ 2Áß ¹Ýº¹¹®
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
-			// 6. ÇöÀç ÇÈ¼¿(x,y)°ú Áß½É(centerX, centerY) »çÀÌÀÇ °Å¸® °è»ê
 			double currentDistance = sqrt((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY));
 
-			// 7. Vignette ·ÎÁ÷ (ÇÙ½É)
-			// (ÇöÀç°Å¸® / ÃÖ´ë°Å¸®)·Î 0.0(Áß½É) ~ 1.0(¸ð¼­¸®)ÀÇ ºñÀ²À» ±¸ÇÔ
-			// ¿©±â¿¡ °­µµ¸¦ °öÇØ¼­ È¿°ú¸¦ Á¶Àý
 			double ratio = (currentDistance / maxDistance) * VIGNETTE_STRENGTH;
 
-			// 1.0¿¡¼­ ÀÌ ºñÀ²À» »©¼­ '¹à±â °è¼ö(Factor)'¸¦ ±¸ÇÔ
-			// (Áß½É: 1.0, ¸ð¼­¸®: 0.0 ±ÙÃ³)
 			double brightnessFactor = 1.0 - ratio;
 
-			// 8. ¹à±â °è¼ö Å¬·¥ÇÎ (0.0 ~ 1.0)
-			// VIGNETTE_STRENGTH°¡ 1.0º¸´Ù Å©¸é °è¼ö°¡ À½¼ö°¡ µÉ ¼ö ÀÖÀ¸¹Ç·Î,
-			// 0.0 ~ 1.0 »çÀÌÀÇ °ªÀ¸·Î °íÁ¤ÇÕ´Ï´Ù.
 			brightnessFactor = std::min(1.0, std::max(0.0, brightnessFactor));
 
-			// 9. ÇÈ¼¿ °ª ÀÐ±â ¹× Àû¿ë
 			RGBQUAD color = m_pImage->GetPixelColor(x, y);
 
-			// R, G, B °¢ Ã¤³Î¿¡ µ¿ÀÏÇÑ ¹à±â °è¼ö¸¦ °öÇØ¼­ ¾îµÓ°Ô ¸¸µì´Ï´Ù.
 			color.rgbRed = (BYTE)(color.rgbRed * brightnessFactor);
 			color.rgbGreen = (BYTE)(color.rgbGreen * brightnessFactor);
 			color.rgbBlue = (BYTE)(color.rgbBlue * brightnessFactor);
 
-			// 10. °è»êµÈ »õ »ö»ó °ªÀ¸·Î (x, y) À§Ä¡ÀÇ ÇÈ¼¿À» µ¤¾î¾¹´Ï´Ù.
 			m_pImage->SetPixelColor(x, y, color);
 		}
 	}
 
-	// 11. ¸ðµç ºä(View)¿¡ È­¸éÀ» »õ·Î °íÄ§ÇÏ¶ó°í ¾Ë¸³´Ï´Ù.
 	UpdateAllViews(NULL);
 }
