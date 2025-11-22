@@ -34,6 +34,15 @@ public:
 // 구현입니다.
 public:
 	virtual ~CImageProcessingDoc();
+
+// 컨볼루션 필터 엔진 관련 함수들
+public:
+	// 3x3 커널을 받아서 컨볼루션 연산을 수행하는 엔진 함수
+	void ApplyConvolution3x3(double kernel[3][3]);
+
+	// 값을 0~255 사이로 잘라주는 도우미 함수
+	BYTE Clamp(double value);
+
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

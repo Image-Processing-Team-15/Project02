@@ -175,6 +175,64 @@ void CImageProcessingDoc::OnFileRevert()
 	UpdateAllViews(NULL);
 }
 
+// ==========================================================
+//  2D Convolution Engine (3x3)
+//  3x3 커널 배열을 입력받아 이미지 전체에 합성곱 수행
+// ==========================================================
+void CImageProcessingDoc::ApplyConvolution3x3(double kernel[3][3])
+{
+	if (!m_pImage) return;
+
+	// 1. 원본 이미지를 복사합니다. (계산 중에는 원본 값이 필요하므로)
+	CxImage tempImage(*m_pImage);
+
+	int width = m_pImage->GetWidth();
+	int height = m_pImage->GetHeight();
+
+	// 2. 이미지 순회 (가장자리 1픽셀은 계산에서 제외: 1 ~ size-1)
+	//    (가장자리는 이웃 픽셀이 없어서 계산이 복잡해지므로 보통 건너뜁니다)
+	for (int y = 1; y < height - 1; y++)
+	{
+		for (int x = 1; x < width - 1; x++)
+		{
+			double sumR = 0.0, sumG = 0.0, sumB = 0.0;
+
+			// 3. 3x3 커널 적용 (Convolution 핵심 로직)
+			for (int ky = 0; ky < 3; ky++)
+			{
+				for (int kx = 0; kx < 3; kx++)
+				{
+					// 주변 픽셀(neighbor) 가져오기
+					// (x-1, y-1) 부터 (x+1, y+1) 까지
+					RGBQUAD pixel = tempImage.GetPixelColor(x + kx - 1, y + ky - 1);
+
+					// 커널 값과 곱해서 누적
+					double k = kernel[ky][kx];
+					sumR += pixel.rgbRed * k;
+					sumG += pixel.rgbGreen * k;
+					sumB += pixel.rgbBlue * k;
+				}
+			}
+
+			// 4. 결과값 클램핑 및 저장
+			RGBQUAD newPixel;
+			newPixel.rgbRed = Clamp(sumR);
+			newPixel.rgbGreen = Clamp(sumG);
+			newPixel.rgbBlue = Clamp(sumB);
+			newPixel.rgbReserved = 0;
+
+			m_pImage->SetPixelColor(x, y, newPixel);
+		}
+	}
+}
+
+// [도우미 함수] 값의 범위를 0~255로 제한
+BYTE CImageProcessingDoc::Clamp(double value)
+{
+	if (value > 255.0) return 255;
+	if (value < 0.0)   return 0;
+	return (BYTE)value;
+}
 
 // ----------------------
 // Stylization Filters
