@@ -195,8 +195,105 @@ void CImageProcessingDoc::OnStylizeCartoon()
 
 void CImageProcessingDoc::OnStylizeOilPainting()
 {
+	// 1. 이미지가 열려있는지 확인
 	if (!m_pImage) return;
-	AfxMessageBox(_T("Oil Painting Filter 실행"));
+
+	// 컬러 이미지가 아니면 처리 불가
+	if (m_pImage->GetBpp() < 24)
+	{
+		AfxMessageBox(_T("Oil Painting filter can only be applied to color images."));
+		return;
+	}
+
+	// --- 필터 튜닝 값 (상수) ---
+	const int radius = 4;        // 붓 터치 크기 (클수록 뭉개짐이 커짐, 2~5 추천)
+	const int intensityLevels = 20; // 밝기 단계 (작을수록 색이 단순해짐, 10~30 추천)
+	// --------------------------
+
+	// 2. 원본 이미지를 복사 (계산 중 원본 데이터 참조용)
+	CxImage tempImage(*m_pImage);
+
+	int width = m_pImage->GetWidth();
+	int height = m_pImage->GetHeight();
+
+	// 3. 전체 픽셀 순회
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			// 각 밝기 레벨별로 카운트할 배열과 색상 합계 배열 초기화
+			// intensityLevels 개수만큼 0으로 초기화
+			int intensityCount[256] = { 0 };
+			int sumR[256] = { 0 };
+			int sumG[256] = { 0 };
+			int sumB[256] = { 0 };
+
+			// 4. 커널(주변 픽셀) 순회 (-radius ~ +radius)
+			for (int ky = -radius; ky <= radius; ky++)
+			{
+				for (int kx = -radius; kx <= radius; kx++)
+				{
+					int nx = x + kx;
+					int ny = y + ky;
+
+					// 이미지 범위를 벗어나지 않도록 체크
+					if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+					{
+						RGBQUAD pixel = tempImage.GetPixelColor(nx, ny);
+
+						// 현재 픽셀의 밝기(Intensity) 계산 (0~255)
+						int currentIntensity = (pixel.rgbRed + pixel.rgbGreen + pixel.rgbBlue) / 3;
+
+						// 밝기를 intensityLevels 단계로 양자화(Quantization)
+						// 예: 255를 20단계로 나누면, 밝기 0~12는 0번 방, 13~25는 1번 방...
+						int binIndex = (currentIntensity * intensityLevels) / 255;
+
+						// 인덱스 안전 장치
+						if (binIndex >= intensityLevels) binIndex = intensityLevels - 1;
+
+						// 해당 밝기 단계에 카운트 증가 및 색상 누적
+						intensityCount[binIndex]++;
+						sumR[binIndex] += pixel.rgbRed;
+						sumG[binIndex] += pixel.rgbGreen;
+						sumB[binIndex] += pixel.rgbBlue;
+					}
+				}
+			}
+
+			// 5. 가장 빈도수가 높은(픽셀이 제일 많은) 밝기 단계 찾기
+			int maxCount = -1;
+			int maxIndex = 0;
+
+			for (int i = 0; i < intensityLevels; i++)
+			{
+				if (intensityCount[i] > maxCount)
+				{
+					maxCount = intensityCount[i];
+					maxIndex = i;
+				}
+			}
+
+			// 6. 가장 많이 나온 단계의 '평균 색상' 계산
+			RGBQUAD newPixel;
+			if (maxCount > 0) // 0으로 나누기 방지
+			{
+				newPixel.rgbRed = (BYTE)(sumR[maxIndex] / maxCount);
+				newPixel.rgbGreen = (BYTE)(sumG[maxIndex] / maxCount);
+				newPixel.rgbBlue = (BYTE)(sumB[maxIndex] / maxCount);
+				newPixel.rgbReserved = 0;
+			}
+			else
+			{
+				// 예외 상황: 원래 색 유지
+				newPixel = tempImage.GetPixelColor(x, y);
+			}
+
+			// 7. 결과 이미지에 적용
+			m_pImage->SetPixelColor(x, y, newPixel);
+		}
+	}
+
+	// 8. 화면 갱신
 	UpdateAllViews(NULL);
 }
 
